@@ -1,0 +1,103 @@
+task helloWorld << {
+    println "Hello World"
+}
+
+
+task helloWorldTwo {
+   doLast {
+      println 'helloWorldTwo'}
+}
+
+task helloWorldThree {
+   doFirst {
+      println 'helloWorldThree'}
+}
+
+task copyFile(type: Copy) {
+    from "src"
+    into "dst"
+}
+
+// 依赖.先执行 three,再执行four。 方式 1
+task helloWorldFour(dependsOn:helloWorldThree) << {
+    println 'helloWorldFour'
+}
+// 方式 2 
+task helloWorldFour1 << {
+    println 'helloWorldFour'
+}
+helloWorldFour1.dependsOn helloWorldThree
+
+// Property 方式1
+task helloWorldProperty << {
+    description = "this is helloWorldProperty"
+    println description
+}
+
+// Property 方式2
+task helloWorldProperty2 << {
+    println description
+}
+helloWorldProperty2.configure {
+    description = "this is helloWorldProperty2"
+}
+
+// Property 方式3
+task helloWorldProperty3 << {
+    println description
+}
+helloWorldProperty3 {
+    description = "this is helloWorldProperty3"
+}
+
+// bean
+class GroovyBeanExample {
+    private String name 
+}
+
+task helloWorldBean << {
+    def bean = new GroovyBeanExample()
+    bean.name = 'this is bean.getName()'
+    println bean.name 
+}
+
+// 自定义Property
+ext.property1 = 'this is property1'
+// 或者 闭包形式
+ext {
+    property2 = 'this is property2'
+}
+
+task showProperty << {
+    println property1
+    println property2
+}
+
+// 
+task showCommandLieProperties << {
+   println property3
+}
+//以下是cmd中执行命令
+//gradle -Property3="this is property3" showCommandLieProperties
+
+//通过JVM系统参数定义Property,与java类似，但是前面要约定以“org.gradle.project”为前缀
+//gradle -D org.gradle.project.property3="this is another property3" showCommandLieProperties
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
