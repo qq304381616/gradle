@@ -3,13 +3,23 @@
 
 apply plugin: 'java'
 
-ext.classfilepath = '/bin' // 生成class的临时目录
+ext.classfilepath = 'bin' // 生成class的临时目录
+
+configurations {
+    buildDependencies
+}
+
+dependencies {
+    buildDependencies "org.freemarker:freemarker:2.3.23"
+}
 
 task compilesingle(type: JavaCompile) {
-    source = 'app/src/main/java'
-    include "com/example/hl/androidtest/JavaMain.java"
+    source = 'app/src/main/java' // .java目录
+    include "com/example/hl/androidtest/JavaMain.java" // 需要编译成.class的文件。可以是当前目录*.java
     classpath = files(classfilepath)
-    destinationDir = file(classfilepath)
+    // classpath = project.configurations.buildDependencies // 加载第三方库
+    // classpath = files('./bin', project.configurations.buildDependencies) // 加载本地class和第三方库
+    destinationDir = file(classfilepath) // .class 输出目录
 }
 
 task execlass(type: JavaExec) {
