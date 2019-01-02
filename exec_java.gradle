@@ -2,6 +2,11 @@
 // gradle 编译 执行 java main 方法。
 
 apply plugin: 'java'
+// apply plugin: 'com.android.library' // android项目使用这句替换上一句。
+
+tasks.withType(JavaCompile) { // 解决编译乱码问题
+    options.encoding = "UTF-8"
+}
 
 ext.classfilepath = 'bin' // 生成class的临时目录
 
