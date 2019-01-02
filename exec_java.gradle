@@ -1,0 +1,24 @@
+
+// gradle 编译 执行 java main 方法。
+
+apply plugin: 'java'
+
+ext.classfilepath = '/bin' // 生成class的临时目录
+
+task compilesingle(type: JavaCompile) {
+    source = 'app/src/main/java'
+    include "com/example/hl/androidtest/JavaMain.java"
+    classpath = files(classfilepath)
+    destinationDir = file(classfilepath)
+}
+
+task execlass(type: JavaExec) {
+    classpath = files(classfilepath)
+    main = 'com.example.hl.androidtest.JavaMain'
+}
+
+task exec {
+    compilesingle.execute() // 编译java为class文件
+    execlass.exec() // 执行class
+    delete file(classfilepath) // 删除编译生成的class文件
+}
